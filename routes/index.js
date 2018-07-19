@@ -36,19 +36,26 @@ router.get('/yyt/cj/api', function(req, res, next) {
  		var param = req.query || req.params;   
 		// 建立连接 增加一个用户信息 
 		connection.query(userSQL.queryAll, function(err, result) {
-			console.log("66666");
-	        if(result) {      
-	             result = {   
-	                code: 200,   
-	                msg:'请求成功',
-	                items: result
-	             };  
-	        }      
-     		// 以json形式，把操作结果返回给前台页面     
-       		responseJSON(res, result);   
+			var data = result;
+			connection.query(userSQL.queryImg, function(err, result) {
+				var Img = result;
+		        if(result) {      
+		             result = {   
+		                code: 200,   
+		                msg:'请求成功',
+		                items: data
+		             };  
+		        }
+		        for(var i = 0; i < result.items.length; i++) {
+		        	result.items[i].images = result.items[i].images.split("#");
+		        	console.log(result.items[i].images);
+		        }
+	     		// 以json形式，把操作结果返回给前台页面     
+	       		responseJSON(res, result);   
 
-     		// 释放连接  
-      		connection.release(); 
+	     		// 释放连接  
+	      		connection.release(); 
+	      	});
        });
 	});
 });
