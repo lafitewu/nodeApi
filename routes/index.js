@@ -35,21 +35,35 @@ router.get('/yyt/cj/api', function(req, res, next) {
 		// 获取前台页面传过来的参数  
  		var param = req.query || req.params;   
 		// 建立连接 增加一个用户信息 
-		connection.query(userSQL.queryAll, function(err, result) {
+		var pages,
+		cupages = parseInt(param.currentPage) || 1,
+		returnpage = parseInt(param.returnPage) || 10;
+		connection.query(userSQL.querypages, function(err, result) {
+			pages = Math.ceil(result.length/returnpage);
+		});
+		connection.query(userSQL.queryAll, [(cupages-1)*returnpage,returnpage], function(err, result) {
 			var data = result;
 			connection.query(userSQL.queryImg, function(err, result) {
 				var Img = result;
-		        if(result) {      
-		             result = {   
-		                code: 200,   
-		                msg:'请求成功',
-		                items: data
-		             };  
-		        }
-		        for(var i = 0; i < result.items.length; i++) {
-		        	result.items[i].images = result.items[i].images.split("#");
-		        	console.log(result.items[i].images);
-		        }
+				if(Object.keys(param).length > 1 ) {
+					if(result) {      
+			             result = {   
+			                code: 200,   
+			                msg:'请求成功',
+			                AllPages: pages,
+			                CurrentPages: cupages,
+			                items: data
+			             };  
+			        }
+			        for(var i = 0; i < result.items.length; i++) {
+			        	result.items[i].images = result.items[i].images.split("#");
+			        }
+				}else {
+					result = {   
+		                code: 201,   
+		                msg:'参数错误',
+		            }
+				}
 	     		// 以json形式，把操作结果返回给前台页面     
 	       		responseJSON(res, result);   
 
