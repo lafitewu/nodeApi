@@ -17,8 +17,13 @@ var responseJSON = function (res, ret) {
           	msg: '操作失败'   
         }); 
     } else { 
-      res.json(ret); 
-      res.end();
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Headers", "X-Requested-With");
+    res.header("Access-Control-Allow-Methods","PUT,POST,GET,DELETE,OPTIONS");
+    res.header("X-Powered-By",' 3.2.1')
+    res.header("Content-Type", "application/json;charset=utf-8");
+    res.json(ret); 
+    res.end();
   	}
 };
 
