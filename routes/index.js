@@ -132,8 +132,20 @@ router.get('/yyt/cj/add', function(req, res, next) {
 	pool.getConnection(function(err, connection) { 
 		// 获取前台页面传过来的参数  
  		var param = req.query || req.params;
- 		datas = param.datas;
- 		connection.query(userSQL.insert, datas,function(err, result) {
+ 		var Id = param.id,
+ 			title = param.name,
+ 			resource = param.source,
+ 			url = param.url,
+ 			type = param.pictype,
+ 			img,
+ 			status = param.status;
+ 			if(param.pic2 != "") {
+ 				img = param.pic1+"#"+param.pic2+"#"+param.pic3;
+ 			}else {
+ 				img = param.pic1;
+ 			}
+ 		console.log(param);
+ 		connection.query(userSQL.insert, [Id,title,resource,url,type,img,status],function(err, result) {
 			if(result) {      
 	             result = {   
 	                code: 200,   
