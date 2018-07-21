@@ -34,6 +34,7 @@ router.get('/yyt/cj', function(req, res, next) {
   // res.json();
 });
 
+// 新闻api
 router.get('/yyt/cj/api', function(req, res, next) {
 	//从连接池获取连接 
 	pool.getConnection(function(err, connection) { 
@@ -47,6 +48,52 @@ router.get('/yyt/cj/api', function(req, res, next) {
 			pages = Math.ceil(result.length/returnpage);
 		});
 		connection.query(userSQL.queryAll, [(cupages-1)*returnpage,returnpage], function(err, result) {
+			var data = result;
+			connection.query(userSQL.queryImg, function(err, result) {
+				var Img = result;
+				if(Object.keys(param).length > 1 ) {
+					if(result) {      
+			             result = {   
+			                code: 200,   
+			                msg:'请求成功',
+			                AllPages: pages,
+			                CurrentPages: cupages,
+			                items: data
+			             };  
+			        }
+			        for(var i = 0; i < result.items.length; i++) {
+			        	result.items[i].images = result.items[i].images.split("#");
+			        }
+				}else {
+					result = {   
+		                code: 201,   
+		                msg:'参数错误',
+		            }
+				}
+	     		// 以json形式，把操作结果返回给前台页面     
+	       		responseJSON(res, result);   
+
+	     		// 释放连接  
+	      		connection.release(); 
+	      	});
+       });
+	});
+});
+
+// admin api
+router.get('/yyt/cj/admin/api', function(req, res, next) {
+	//从连接池获取连接 
+	pool.getConnection(function(err, connection) { 
+		// 获取前台页面传过来的参数  
+ 		var param = req.query || req.params;   
+		// 建立连接 增加一个用户信息 
+		var pages,
+		cupages = parseInt(param.currentPage) || 1,
+		returnpage = parseInt(param.returnPage) || 10;
+		connection.query(userSQL.querypages, function(err, result) {
+			pages = Math.ceil(result.length/returnpage);
+		});
+		connection.query(userSQL.queryAdmin, [(cupages-1)*returnpage,returnpage], function(err, result) {
 			var data = result;
 			connection.query(userSQL.queryImg, function(err, result) {
 				var Img = result;
