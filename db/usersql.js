@@ -6,5 +6,6 @@ var UserSQL = {
 	queryImg:'SELECT images FROM htt_tab_dynamic_list', 
 	getUserById:'SELECT * FROM user WHERE id = ? ',
 	getUserByName:'SELECT * FROM user WHERE name = ? ',
+	deleteAdmin: 'delete from htt_tab_dynamic_list where id = ?'
 };
 module.exports = UserSQL;
