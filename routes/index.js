@@ -188,4 +188,40 @@ router.get('/yyt/cj/delete', function(req, res, next) {
   // res.json();
 });
 
+// edit - api
+router.get('/yyt/cj/edit', function(req, res, next) {
+	pool.getConnection(function(err, connection) { 
+		// 获取前台页面传过来的参数  
+ 		var param = req.query || req.params;
+ 		var Id = param.id,
+ 			title = param.name,
+ 			resource = param.source,
+ 			url = param.url,
+ 			type = param.pictype,
+ 			img,
+ 			status = param.status;
+ 			if(param.pic2 != "") {
+ 				img = param.pic1+"#"+param.pic2+"#"+param.pic3;
+ 			}else {
+ 				img = param.pic1;
+ 			}
+ 		connection.query(userSQL.updateAdmin, [title,resource,url,type,img,status,Id],function(err, result) {
+			if(result) {      
+	             result = {   
+	                code: 200,   
+	                msg:'添加成功'
+	             };  
+	        }
+	        // 以json形式，把操作结果返回给前台页面     
+       		responseJSON(res, result);   
+
+     		// 释放连接  
+      		connection.release();
+		});
+
+	})
+		
+  // res.json();
+});
+
 module.exports = router;
