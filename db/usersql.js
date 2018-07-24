@@ -7,6 +7,7 @@ var UserSQL = {
 	getUserById:'SELECT * FROM user WHERE id = ? ',
 	getUserByName:'SELECT * FROM user WHERE name = ? ',
 	deleteAdmin: 'delete from htt_tab_dynamic_list where id = ?',
-	updateAdmin: 'update htt_tab_dynamic_list set title = ?,resource = ?,url = ?,type = ?,images = ?,status = ?,updateDate = NOW() where id = ?'
+	updateAdmin: 'update htt_tab_dynamic_list set title = ?,resource = ?,url = ?,type = ?,images = ?,status = ?,updateDate = NOW() where id = ?',
+	updateStatus: 'update htt_tab_dynamic_list set status = ?,updateDate = NOW() where id =?'
 };
 module.exports = UserSQL;

@@ -224,4 +224,35 @@ router.get('/yyt/cj/edit', function(req, res, next) {
   // res.json();
 });
 
+// status - api
+router.get('/yyt/cj/status', function(req, res, next) {
+	pool.getConnection(function(err, connection) { 
+		// 获取前台页面传过来的参数  
+ 		var param = req.query || req.params;
+ 		var Id = param.id,
+ 			status = param.status;
+ 			if(status == "true") {
+ 				status = 2
+ 			}else {
+ 				status = 1
+ 			}
+ 		connection.query(userSQL.updateStatus, [status,Id],function(err, result) {
+			if(result) {      
+	             result = {   
+	                code: 200,   
+	                msg:'状态更新成功'
+	             };  
+	        }
+	        // 以json形式，把操作结果返回给前台页面     
+       		responseJSON(res, result);   
+
+     		// 释放连接  
+      		connection.release();
+		});
+
+	})
+		
+  // res.json();
+});
+
 module.exports = router;
