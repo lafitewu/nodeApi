@@ -43,11 +43,12 @@ router.get('/yyt/cj/api', function(req, res, next) {
 		// 建立连接 增加一个用户信息 
 		var pages,
 		cupages = parseInt(param.currentPage) || 1,
-		returnpage = parseInt(param.returnPage) || 10;
+		returnpage = parseInt(param.returnPage) || 10,
+		category = param.category;
 		connection.query(userSQL.querypages, function(err, result) {
 			pages = Math.ceil(result.length/returnpage);
 		});
-		connection.query(userSQL.queryAll, [(cupages-1)*returnpage,returnpage], function(err, result) {
+		connection.query(userSQL.queryAll, [category,(cupages-1)*returnpage,returnpage], function(err, result) {
 			var data = result;
 			connection.query(userSQL.queryImg, function(err, result) {
 				var Img = result;
@@ -58,6 +59,7 @@ router.get('/yyt/cj/api', function(req, res, next) {
 			                msg:'请求成功',
 			                AllPages: pages,
 			                CurrentPages: cupages,
+			                category: category,
 			                items: data
 			             };  
 			        }
