@@ -1,9 +1,9 @@
 module.exports = {  
 	mysql: {   
-		host: 'rm-m5e100gk3x226m0j4rw.mysql.rds.aliyuncs.com',     
-		user: 'lttuser',   
-		password: 'lttGo888',  
-		database:'htt',
+		host: 'rm-wz9u8a3hka2dmzt28.mysql.rds.aliyuncs.com',     
+		user: 'midong',   
+		password: 'Midong2018',  
+		database:'cms',
 		port: 3306
 	}
 };
