@@ -134,11 +134,14 @@ router.get('/yyt/cj/add', function(req, res, next) {
 	pool.getConnection(function(err, connection) { 
 		// 获取前台页面传过来的参数  
  		var param = req.query || req.params;
+ 		console.log(param);
  		var Id = param.id,
  			title = param.name,
  			resource = param.source,
  			url = param.url,
  			type = param.pictype,
+ 			category = param.category,
+ 			seqNum = param.seqNum,
  			img,
  			status = param.status;
  			if(param.pic2 != "") {
@@ -146,7 +149,7 @@ router.get('/yyt/cj/add', function(req, res, next) {
  			}else {
  				img = param.pic1;
  			}
- 		connection.query(userSQL.insert, [Id,title,resource,url,type,img,status],function(err, result) {
+ 		connection.query(userSQL.insert, [Id,category,seqNum,title,resource,url,type,img,status],function(err, result) {
 			if(result) {      
 	             result = {   
 	                code: 200,   
@@ -200,6 +203,8 @@ router.get('/yyt/cj/edit', function(req, res, next) {
  			resource = param.source,
  			url = param.url,
  			type = param.pictype,
+ 			category = param.category,
+ 			seqNum = param.seqNum,
  			img,
  			status = param.status;
  			if(param.pic2 != "") {
@@ -207,7 +212,7 @@ router.get('/yyt/cj/edit', function(req, res, next) {
  			}else {
  				img = param.pic1;
  			}
- 		connection.query(userSQL.updateAdmin, [title,resource,url,type,img,status,Id],function(err, result) {
+ 		connection.query(userSQL.updateAdmin, [category,seqNum,title,resource,url,type,img,status,Id],function(err, result) {
 			if(result) {      
 	             result = {   
 	                code: 200,   
